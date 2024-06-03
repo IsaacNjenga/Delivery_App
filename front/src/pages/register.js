@@ -4,7 +4,12 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 function Register() {
-  const [values, setValues] = useState({ name: "", email: "", password: "" });
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+  });
   const navigate = useNavigate();
 
   const handleInput = (e) => {
@@ -40,6 +45,24 @@ function Register() {
               onChange={handleInput}
               className="form-control rounded-0"
             />
+          </div>
+          <div className="mb-3">
+            <label>
+              <span>Role</span>
+              <select
+                className="select"
+                value={values.role}
+                onChange={(e) => {
+                  setValues({ ...values, role: e.target.value });
+                }}
+              >
+                <option value="" disabled>
+                  Select Role
+                </option>
+                <option value="logistic manager">Logistic Manager</option>
+                <option value="delivery personnel">Delivery Personnel</option>
+              </select>
+            </label>
           </div>
           <div className="mb-3">
             <label htmlFor="email">

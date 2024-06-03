@@ -8,7 +8,6 @@ const path = require("path");
 
 const app = express();
 
-// Configuring CORS
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -17,20 +16,18 @@ app.use(
   })
 );
 
-// Configuring the middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: "secret", // to encrypt the session cookie
+    secret: "secret",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 
-// Helper function to read the JSON file
 const readJSONFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf8", (err, data) => {
@@ -43,7 +40,6 @@ const readJSONFile = (filePath) => {
   });
 };
 
-// Route for registering a new user
 app.post("/register", async (req, res) => {
   try {
     const users = await readJSONFile(path.join(__dirname, "data.json"));
@@ -52,6 +48,7 @@ app.post("/register", async (req, res) => {
       username: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      role: req.body.role,
     };
     users.push(newUser);
     fs.writeFileSync(
@@ -65,7 +62,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Route for a user login
 app.post("/login", async (req, res) => {
   try {
     const users = await readJSONFile(path.join(__dirname, "data.json"));
@@ -84,13 +80,30 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Route for checking session
+app.get("/profile", (req, res) => {
+  if (req.session.username) {
+    res.json({ username: req.session.username });
+  } else {
+    res.json(null);
+  }
+});
+
 app.get("/", (req, res) => {
   if (req.session.username) {
     return res.json({ valid: true, username: req.session.username });
   } else {
     return res.json({ valid: false });
   }
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.json({ message: "Logout failed" });
+    }
+    res.clearCookie("connect.sid");
+    res.json({ message: "User logged out" });
+  });
 });
 
 app.listen(8081, () => {
