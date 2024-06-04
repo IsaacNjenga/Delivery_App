@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "john",
+    "location": "nairobi",
+    "type": "small",
+    "time": "soon",
+    "payment": "on delivery"
+  },
+  {
+    "id": 2,
+    "name": "oj",
+    "location": "nakuru",
+    "type": "small",
+    "time": "fast",
+    "payment": "on delivery"
+  }
+]

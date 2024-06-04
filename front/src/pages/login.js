@@ -21,7 +21,7 @@ function Login() {
         setUser({ username: res.data.username });
         setIsAuthenticated(true);
         toast.success("Login Successful");
-        navigate("/"); // Navigate to home page after successful login
+        navigate("/");
       } else {
         toast.error("No record!");
       }

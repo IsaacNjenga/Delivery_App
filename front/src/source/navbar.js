@@ -50,8 +50,13 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/register">
-                      Register
+                    <Link className="nav-link" to="/manager">
+                      Manager
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/delivery">
+                      Delivery
                     </Link>
                   </li>
                   {user ? (

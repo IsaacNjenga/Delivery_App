@@ -106,6 +106,39 @@ app.get("/logout", (req, res) => {
   });
 });
 
+app.post("/order", async (req, res) => {
+  try {
+    const orders = await readJSONFile(path.join(__dirname, "jobs.json"));
+    const newOrder = {
+      id: orders.length + 1,
+      name: req.body.name,
+      location: req.body.location,
+      type: req.body.type,
+      time: req.body.time,
+      payment: req.body.payment,
+    };
+    orders.push(newOrder);
+    fs.writeFileSync(
+      path.join(__dirname, "jobs.json"),
+      JSON.stringify(orders, null, 2)
+    );
+    res.json(newOrder);
+  } catch (error) {
+    console.error("Error reading or writing the data: ", error);
+    res.json({ Message: "Error reading or writing the data" });
+  }
+});
+
+app.get("/allJobs", async (req, res) => {
+  try {
+    const orders = await readJSONFile(path.join(__dirname, "jobs.json"));
+    res.json(orders);
+  } catch (error) {
+    console.error("Error reading or writing the data: ", error);
+    res.json({ Message: "Error reading or writing the data" });
+  }
+});
+
 app.listen(8081, () => {
   console.log("Connected");
 });
