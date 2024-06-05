@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "username": "isaac_njenga",
+    "email": "ayzzoh20@gmail.com",
+    "password": "789456123",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 2,
+    "username": "streamer",
+    "email": "caligrafa79@gmail.com",
+    "password": "123456789",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 3,
+    "username": "ojk",
+    "email": "oj12@email.com",
+    "password": "123456",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 4,
+    "username": "bob_jones",
+    "email": "bob@example.com",
+    "password": "bob2024",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 5,
+    "username": "david_clark",
+    "email": "david@example.com",
+    "password": "david2024",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 6,
+    "username": "Lucy Smith",
+    "email": "lusmith@gmail.com",
+    "password": "123456",
+    "role": "delivery personnel"
+  },
+  {
+    "id": 7,
+    "username": "delivery1",
+    "email": "delivery1@email.com",
+    "password": "123edfg",
+    "role": "delivery personnel"
+  }
+]

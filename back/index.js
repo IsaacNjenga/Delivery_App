@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "DELETE"],
     credentials: true,
   })
 );
@@ -40,46 +40,93 @@ const readJSONFile = (filePath) => {
   });
 };
 
+//register endpoint
 app.post("/register", async (req, res) => {
   try {
-    const users = await readJSONFile(path.join(__dirname, "data.json"));
-    const newUser = {
-      id: users.length + 1,
-      username: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
-    };
-    users.push(newUser);
-    fs.writeFileSync(
-      path.join(__dirname, "data.json"),
-      JSON.stringify(users, null, 2)
-    );
-    res.json(newUser);
+    if (req.body.role === "logistic manager") {
+      const managerUsers = await readJSONFile(
+        path.join(__dirname, "managers.json")
+      );
+      const newManagerUser = {
+        id: managerUsers.length + 1,
+        username: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role,
+      };
+      managerUsers.push(newManagerUser);
+      fs.writeFileSync(
+        path.join(__dirname, "managers.json"),
+        JSON.stringify(managerUsers, null, 2)
+      );
+      res.json(newManagerUser);
+    } else if (req.body.role === "delivery personnel") {
+      const deliveryUsers = await readJSONFile(
+        path.join(__dirname, "delivery_personnel.json")
+      );
+      const newDeliveryUser = {
+        id: deliveryUsers.length + 1,
+        username: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role,
+      };
+      deliveryUsers.push(newDeliveryUser);
+      fs.writeFileSync(
+        path.join(__dirname, "delivery_personnel.json"),
+        JSON.stringify(deliveryUsers, null, 2)
+      );
+      res.json(newDeliveryUser);
+    }
   } catch (error) {
     console.error("Error reading or writing the data: ", error);
     res.json({ Message: "Error reading or writing the data" });
   }
 });
 
+//login endpoint
 app.post("/login", async (req, res) => {
   try {
-    const users = await readJSONFile(path.join(__dirname, "data.json"));
-    const user = users.find(
+    const managers = await readJSONFile(path.join(__dirname, "managers.json"));
+    const deliveryPersonnel = await readJSONFile(
+      path.join(__dirname, "delivery_personnel.json")
+    );
+
+    const user = managers.find(
       (u) => u.email === req.body.email && u.password === req.body.password
     );
 
-    if (user) {
-      req.session.username = user.username;
-      res.json({ Login: true, username: req.session.username });
+    if (!user) {
+      const deliveryUser = deliveryPersonnel.find(
+        (u) => u.email === req.body.email && u.password === req.body.password
+      );
+
+      if (deliveryUser) {
+        req.session.username = deliveryUser.username;
+        req.session.role = "delivery personnel";
+        res.json({
+          Login: true,
+          username: req.session.username,
+          role: req.session.role,
+        });
+      } else {
+        res.json({ Login: false });
+      }
     } else {
-      res.json({ Login: false });
+      req.session.username = user.username;
+      req.session.role = "logistic manager";
+      res.json({
+        Login: true,
+        username: req.session.username,
+        role: req.session.role,
+      });
     }
   } catch (error) {
     res.json({ Message: "Error reading data" });
   }
 });
 
+//getting the profile of user
 app.get("/profile", (req, res) => {
   if (req.session.username) {
     res.json({ username: req.session.username });
@@ -96,6 +143,7 @@ app.get("/", (req, res) => {
   }
 });
 
+//logout endpoint
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -106,6 +154,7 @@ app.get("/logout", (req, res) => {
   });
 });
 
+//posting an order endpoint
 app.post("/order", async (req, res) => {
   try {
     const orders = await readJSONFile(path.join(__dirname, "jobs.json"));
@@ -116,6 +165,10 @@ app.post("/order", async (req, res) => {
       type: req.body.type,
       time: req.body.time,
       payment: req.body.payment,
+      delivererId: req.body.delivererId,
+      delivererName: req.body.delivererName,
+      pay: req.body.pay,
+      bargain: req.body.bargain,
     };
     orders.push(newOrder);
     fs.writeFileSync(
@@ -129,6 +182,7 @@ app.post("/order", async (req, res) => {
   }
 });
 
+//endpoint for viewing all jobs
 app.get("/allJobs", async (req, res) => {
   try {
     const orders = await readJSONFile(path.join(__dirname, "jobs.json"));
@@ -136,6 +190,36 @@ app.get("/allJobs", async (req, res) => {
   } catch (error) {
     console.error("Error reading or writing the data: ", error);
     res.json({ Message: "Error reading or writing the data" });
+  }
+});
+
+//endpoint for fetching all delivery personnel
+app.get("/delivery_personnel", async (req, res) => {
+  try {
+    const delivery_personnel = await readJSONFile(
+      path.join(__dirname, "delivery_personnel.json")
+    );
+    res.json(delivery_personnel);
+  } catch (error) {
+    console.log("Error fetching data", error);
+  }
+});
+
+//endpoint for deleting an order
+app.delete("/orders/:id", (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const jobs = JSON.parse(fs.readFileSync(path.join(__dirname, "jobs.json")));
+    const updatedJobs = jobs.filter((job) => job.id !== parseInt(id));
+    fs.writeFileSync(
+      path.join(__dirname, "jobs.json"),
+      JSON.stringify(updatedJobs, null, 2)
+    );
+    res.json({ message: "Order successfully canceled" });
+  } catch (error) {
+    console.error("Error canceling order:", error);
+    res.status(500).json({ error: "Failed to cancel order" });
   }
 });
 

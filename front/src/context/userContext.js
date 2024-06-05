@@ -7,6 +7,7 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [toContractor, setToContractor] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +33,14 @@ export function UserContextProvider({ children }) {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isAuthenticated, setIsAuthenticated }}
+      value={{
+        user,
+        setUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        toContractor,
+        setToContractor,
+      }}
     >
       {loading ? <div>Loading...</div> : children}
     </UserContext.Provider>

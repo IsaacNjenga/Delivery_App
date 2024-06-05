@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext, UserContextProvider } from "../context/userContext";
 import { toast } from "react-hot-toast";
@@ -19,9 +19,11 @@ export default function Navbar() {
     }
   };
 
-  if (user) {
-    setIsAuthenticated(true);
-  }
+  useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, [user, setIsAuthenticated]);
 
   return (
     <UserContextProvider>

@@ -17,13 +17,20 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:8081/login", values);
-      if (res.data.Login) {
-        setUser({ username: res.data.username });
+      const { Login, role, username } = res.data;
+      if (Login) {
+        setUser({ username: res.data.username, role });
+
+        if (role === "logistic manager") {
+          navigate("/");
+          toast.success(`Welcome ${username}`);
+        } else if (role === "delivery personnel") {
+          navigate("/");
+          toast.success(`Welcome ${username}`);
+        }
         setIsAuthenticated(true);
-        toast.success("Login Successful");
-        navigate("/");
       } else {
-        toast.error("No record!");
+        toast.error("Login failed!");
       }
     } catch (err) {
       console.error(err);

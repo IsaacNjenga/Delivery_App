@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.tick {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}

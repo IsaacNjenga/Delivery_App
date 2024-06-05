@@ -1,18 +1,26 @@
 [
   {
-    "id": 1,
-    "name": "john",
-    "location": "nairobi",
-    "type": "small",
+    "id": 3,
+    "name": "eve_adams",
+    "location": "rongai",
+    "type": "medium",
     "time": "soon",
-    "payment": "on delivery"
+    "payment": "on delivery",
+    "delivererId": 2,
+    "delivererName": "streamer",
+    "pay": "45000",
+    "bargain": "non-negotiable"
   },
   {
-    "id": 2,
-    "name": "oj",
-    "location": "nakuru",
-    "type": "small",
-    "time": "fast",
-    "payment": "on delivery"
+    "id": 4,
+    "name": "CHARLIE_BROWN",
+    "location": "THOME",
+    "type": "big",
+    "time": "later",
+    "payment": "on delivery",
+    "delivererId": 7,
+    "delivererName": "delivery1",
+    "pay": "12000",
+    "bargain": "negotiable"
   }
 ]

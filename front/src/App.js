@@ -10,8 +10,10 @@ import { Toaster } from "react-hot-toast";
 import Manager from "./pages/manager";
 import Delivery from "./pages/delivery";
 import { UserContextProvider } from "./context/userContext";
+import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>
       <div>

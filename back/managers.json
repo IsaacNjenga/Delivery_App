@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "password": "123456",
+    "role": "logistic manager"
+  },
+  {
+    "id": 2,
+    "username": "jane_doe",
+    "email": "jane@example.com",
+    "password": "abcdef",
+    "role": "logistic manager"
+  },
+  {
+    "id": 3,
+    "username": "alice_smith",
+    "email": "alice@example.com",
+    "password": "alice2024",
+    "role": "logistic manager"
+  },
+  {
+    "id": 4,
+    "username": "charlie_brown",
+    "email": "charlie@example.com",
+    "password": "charlie2024",
+    "role": "logistic manager"
+  },
+  {
+    "id": 5,
+    "username": "eve_adams",
+    "email": "eve@example.com",
+    "password": "eve2024",
+    "role": "logistic manager"
+  },
+  {
+    "id": 6,
+    "username": "manager1",
+    "email": "manager1@email.com",
+    "password": "manager101",
+    "role": "logistic manager"
+  }
+]
